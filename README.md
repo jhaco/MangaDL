@@ -5,4 +5,4 @@ A Python script to crawl comic sites and extract chapters. Requires modification
 
 * Modify the number of chapters to crawl
 * Modify the target url to increment through each chapter
-* (optional) Modify the page image extension 
+* (optional) Modify the image extension, should the comic be saved in a format other than .jpg 
