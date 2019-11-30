@@ -31,7 +31,7 @@ def dl_page(site, directory):
 
 start_time = time.time()
 
-for i in range(1,101):
+for i in range(1,101):                                                      #MODIFY BASED ON NUMBER OF CHAPTERS TO CRAWL
     #site = 'https://s7.mkklcdnv7.com/mangakakalot/p1/peerless_dad/chapter_' + str(i) + '/'
     #=======================================================================
     site = 'https://manganelo.com/chapter/peerless_dad/chapter_' + str(i)   #MODIFY TO TAILOR TO THE WEBSITE
