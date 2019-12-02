@@ -3,17 +3,18 @@ import re
 import os
 import time
 
+def get_chapters(site):
+    page = requests.get(site)
+    html = page.text
+    pattern = re.compile(r'\s*a [^>]*href="([^"]+)')
+    links = pattern.findall(html)
+
+    name = site.rsplit("/", 1)[1]                                           #assumes name of comic is appended to end of url
+    chapter_url = [ch for ch in links if name in ch]                        #assumes all chapter urls contains name of comic
+    chapter_url.pop(0)                                                      #assumes "site" variable is included and always first on list
+    return chapter_url
+
 def dl_page(site, directory):
-    #for i in range(1, 100):
-    #    filename = str(i) + '.jpg'
-    #    response = requests.get(site + filename)
-    #    if(response.ok):
-    #        f = open(os.path.join(directory, filename), 'wb')
-    #        f.write(response.content)
-    #        f.close()
-    #    else: 
-    #        break
-    
     page = requests.get(site)
     html = page.text
     pattern = re.compile(r'<\s*img [^>]*src="([^"]+)')                          
@@ -29,17 +30,21 @@ def dl_page(site, directory):
             response = requests.get(img)                                    #requests img url, extracts image and writes to file
             f.write(response.content)
 
+
+#===========================================================================
+
 start_time = time.time()
 
-for i in range(1,101):                                                      #MODIFY BASED ON NUMBER OF CHAPTERS TO CRAWL
-    #site = 'https://s7.mkklcdnv7.com/mangakakalot/p1/peerless_dad/chapter_' + str(i) + '/'
-    #=======================================================================
-    site = 'https://manganelo.com/chapter/peerless_dad/chapter_' + str(i)   #MODIFY TO TAILOR TO THE WEBSITE
-    #=======================================================================
-    directory = os.path.dirname(os.path.realpath(__file__)) + '/' + str(i)
+site = input("Enter the site: ")
+chapters = get_chapters(site) 
+
+for chap in chapters:                                                       
+    name = chap.split("/")[-1]                                              #assumes chapter number is appended at end of chapter url
+    number = re.findall(r'[\d\.\d]+', name)                                 #removes all other non-numeric characters
+    directory = os.path.dirname(os.path.realpath(__file__)) + '/' + number[-1]
     if not os.path.exists(directory):
         os.makedirs(directory)                                              #generates folder for each chapter
-    dl_page(site, directory)
+    dl_page(chap, directory)
 
 end_time = time.time()
 print("Elapsed time was %g seconds" % (end_time - start_time)) 
