@@ -1,5 +1,5 @@
 # MangaDL
-A Python script to crawl comic sites and extract chapters. Requires modifications to adapt to the specific links for each webpage. The script will write files to the script's current directory, and will place all images in their respective folder per chapter.
+A Python script to crawl comic sites and extract chapters. ~~Requires modifications to adapt to the specific links for each webpage.~~ The script will write files to the script's current directory, and will place all images in their respective folder per chapter.
 
 ### Usage
 
