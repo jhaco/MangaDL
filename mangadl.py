@@ -2,6 +2,7 @@ import requests
 import re
 import os
 import time
+import concurrent.futures
 
 def get_chapters(site):
     page = requests.get(site)
@@ -33,26 +34,30 @@ def dl_page(site, directory):
     else:
         print("Failed to get: " + site)
 
-
 #===========================================================================
+
+def manga(chapter):                                                       
+    name = chapter.split("/")[-1]                                              #assumes chapter number is appended at end of chapter url
+    number = re.findall(r'[\d\.\d]+', name)                                 #removes all other non-numeric characters
+    directory = os.path.dirname(os.path.realpath(__file__)) + '/' + arc + '/' + number[-1]
+    if not os.path.exists(directory):
+        os.makedirs(directory)                                              #generates folder for each chapter
+    dl_page(chapter, directory)
+
 
 start_time = time.time()
 
 site = input("Enter the site: ")
 arc = input("Enter an archive name: ")
-try:
-    chapters = get_chapters(site) 
 
-    for chap in chapters:                                                       
-        name = chap.split("/")[-1]                                              #assumes chapter number is appended at end of chapter url
-        number = re.findall(r'[\d\.\d]+', name)                                 #removes all other non-numeric characters
-        directory = os.path.dirname(os.path.realpath(__file__)) + '/' + arc + '/' + number[-1]
-        if not os.path.exists(directory):
-            os.makedirs(directory)                                              #generates folder for each chapter
-        dl_page(chap, directory)
-
-except:
-    print("Invalid URL")
+chapters = get_chapters(site)
+with concurrent.futures.ThreadPoolExecutor(max_workers=10) as exec:
+    future_url = {exec.submit(manga, chapter): chapter for chapter in chapters}
+    for future in concurrent.futures.as_completed(future_url):
+        try:
+            future.result()   
+        except:
+            print("Invalid URL")
 
 end_time = time.time()
 print("Elapsed time was %g seconds" % (end_time - start_time)) 
