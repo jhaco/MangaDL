@@ -4,6 +4,8 @@ A Python script to crawl comic sites and extract chapters. ~~Requires modificati
 ### Usage
 
 * Input the URL of the primary comic page where all chapters are listed. Accounts for side chapters and main chapters.
+  * Search for a comic you want to download from: https://manganelo.com
+  * The link to paste would look like this: https://manganelo.com/manga/peerless_dad
 * Input name of folder. All downloaded chapters will be sent here.
 
 ### Plans
