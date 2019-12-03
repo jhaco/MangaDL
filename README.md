@@ -4,6 +4,7 @@ A Python script to crawl comic sites and extract chapters. ~~Requires modificati
 ### Usage
 
 * Input the url of the primary comic page where all chapters are listed. Accounts for side chapters and main chapters.
+* Input name of folder. All downloaded chapters will be sent here.
 
 ### Plans
 
