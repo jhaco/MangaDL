@@ -39,13 +39,14 @@ def dl_page(site, directory):
 start_time = time.time()
 
 site = input("Enter the site: ")
+arc = input("Enter an archive name: ")
 try:
     chapters = get_chapters(site) 
 
     for chap in chapters:                                                       
         name = chap.split("/")[-1]                                              #assumes chapter number is appended at end of chapter url
         number = re.findall(r'[\d\.\d]+', name)                                 #removes all other non-numeric characters
-        directory = os.path.dirname(os.path.realpath(__file__)) + '/' + number[-1]
+        directory = os.path.dirname(os.path.realpath(__file__)) + '/' + arc + '/' + number[-1]
         if not os.path.exists(directory):
             os.makedirs(directory)                                              #generates folder for each chapter
         dl_page(chap, directory)
