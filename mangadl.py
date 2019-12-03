@@ -10,9 +10,9 @@ def get_chapters(site):
     pattern = re.compile(r'\s*a [^>]*href="([^"]+)')
     links = pattern.findall(html)
 
-    name = site.rsplit("/", 1)[1]                                           #assumes name of comic is appended to end of url
-    chapter_url = [ch for ch in links if name in ch]                        #assumes all chapter urls contains name of comic
-    chapter_url.pop(0)                                                      #assumes "site" variable is included and always first on list
+    name = site.rsplit("/", 1)[1]                                               #assumes name of comic is appended to end of url
+    chapter_url = [ch for ch in links if name in ch]                            #assumes all chapter urls contains name of comic
+    chapter_url.pop(0)                                                          #assumes "site" variable is included and always first on list
     return chapter_url
 
 def dl_page(site, directory):
@@ -28,30 +28,33 @@ def dl_page(site, directory):
             #===================================================================
             if filename is None:                                                #skips non-jpg image files i.e. headers, etc
                 continue
+            if(os.path.isfile(os.path.join(directory, filename.group(1)))):
+                continue
             with open(os.path.join(directory, filename.group(1)), 'wb') as f:
                 response = requests.get(img)                                    #requests img url, extracts image and writes to file
                 f.write(response.content)
     else:
         print("Failed to get: " + site)
 
-#===========================================================================
+#===============================================================================
 
 def manga(chapter):                                                       
-    name = chapter.split("/")[-1]                                              #assumes chapter number is appended at end of chapter url
-    number = re.findall(r'[\d\.\d]+', name)                                 #removes all other non-numeric characters
+    name = chapter.split("/")[-1]                                               #assumes chapter number is appended at end of chapter url
+    number = re.findall(r'[\d\.\d]+', name)                                     #removes all other non-numeric characters
     directory = os.path.dirname(os.path.realpath(__file__)) + '/' + arc + '/' + number[-1]
     if not os.path.exists(directory):
-        os.makedirs(directory)                                              #generates folder for each chapter
+        os.makedirs(directory)                                                  #generates folder for each chapter
     dl_page(chapter, directory)
 
+#===============================================================================
+
+site = input("Enter the site: ")
+arc = input("Name the folder for this download: ")
 
 start_time = time.time()
 
-site = input("Enter the site: ")
-arc = input("Enter an archive name: ")
-
 chapters = get_chapters(site)
-with concurrent.futures.ThreadPoolExecutor(max_workers=10) as exec:
+with concurrent.futures.ThreadPoolExecutor(max_workers=os.cpu_count()) as exec: #spreads processes across the number of 
     future_url = {exec.submit(manga, chapter): chapter for chapter in chapters}
     for future in concurrent.futures.as_completed(future_url):
         try:
