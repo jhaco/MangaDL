@@ -5,6 +5,7 @@ Currently only works for the following websites: manganelo, mangakakalot
 
 ### Usage
 
+* Ensure both mangadl.py and run_mangadl.bat are in the same directory.
 * Find the comic to download (example: https://manganelo.com/manga/peerless_dad)
 * Edit the batch file and add two arguments: the website and the folder name.
 * For every comic to download, call another python line (sample below).
