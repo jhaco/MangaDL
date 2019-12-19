@@ -3,8 +3,11 @@ import re
 import os
 import time
 import concurrent.futures
+import sys
 
-def get_chapters(site):
+#current works for: manganelo.com, mangakakalot.com
+
+def chapter_list(site):
     page = requests.get(site)
     html = page.text
     pattern = re.compile(r'\s*a [^>]*href="([^"]+)')
@@ -15,7 +18,7 @@ def get_chapters(site):
     chapter_url.pop(0)                                                          #assumes "site" variable is included and always first on list
     return chapter_url
 
-def dl_page(site, directory):
+def dl_pages(site, directory):
     page = requests.get(site)
     if(page.ok):
         html = page.text
@@ -38,29 +41,31 @@ def dl_page(site, directory):
 
 #===============================================================================
 
-def manga(chapter):                                                       
+def dl_chapter(chapter, arc):                                                       
     name = chapter.split("/")[-1]                                               #assumes chapter number is appended at end of chapter url
     number = re.findall(r'[\d\.\d]+', name)                                     #removes all other non-numeric characters
-    directory = os.path.dirname(os.path.realpath(__file__)) + '/' + arc + '/' + number[-1]
+    directory = os.path.dirname(os.path.realpath(__file__)) + '/archive/' + arc + '/' + number[-1]
     if not os.path.exists(directory):
         os.makedirs(directory)                                                  #generates folder for each chapter
-    dl_page(chapter, directory)
+        dl_pages(chapter, directory)                                             #only executes if chapter folder does not exist
 
 #===============================================================================
+if __name__ == '__main__':
+    #site = input("Enter the site: ")
+    site = sys.argv[1]
+    #manga = input("Name the folder for this download: ")
+    manga = sys.argv[2]
 
-site = input("Enter the site: ")
-arc = input("Name the folder for this download: ")
+    start_time = time.time()
 
-start_time = time.time()
+    chapters = chapter_list(site)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=os.cpu_count()) as exec: #spreads processes across the number of available cores
+        future_url = {exec.submit(dl_chapter, chapter, manga): chapter for chapter in chapters}
+        for future in concurrent.futures.as_completed(future_url):
+            try:
+                future.result()
+            except:
+                print("Invalid URL")
 
-chapters = get_chapters(site)
-with concurrent.futures.ThreadPoolExecutor(max_workers=os.cpu_count()) as exec: #spreads processes across the number of 
-    future_url = {exec.submit(manga, chapter): chapter for chapter in chapters}
-    for future in concurrent.futures.as_completed(future_url):
-        try:
-            future.result()   
-        except:
-            print("Invalid URL")
-
-end_time = time.time()
-print("Elapsed time was %g seconds" % (end_time - start_time)) 
+    end_time = time.time()
+    print("Elapsed time was %g seconds" % (end_time - start_time))
