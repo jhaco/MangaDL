@@ -1,19 +1,23 @@
 # MangaDL
-A Python script to crawl a comic site and extract chapters. ~~Requires modifications to adapt to the specific links for each webpage.~~ The script will write files to a specified directory, and will place all images in their respective folder per chapter.
+A Python script to crawl a comic site and extract chapters. The script will write files to a specified directory, and will place all images in their respective folder per chapter. 
+
+Currently only works for the following websites: manganelo, mangakakalot 
 
 ### Usage
 
+* Find the comic to download (example: https://manganelo.com/manga/peerless_dad)
 * Edit the batch file and add two arguments: the website and the folder name.
 * For every comic to download, call another python line (sample below).
 * ECHO are optional (for debugging purposes)
+
 ```batch
 @ECHO OFF
 
-python "%~dp0\mangadl.py" "https://manganelo.com/manga/peerless_dad" "Peerless_Dad"
-ECHO completed: Peerless Dad & ECHO.
+python "%~dp0\mangadl.py" "website1" "folder1"
+ECHO completed: comic1 & ECHO.
 
-python "%~dp0\mangadl.py" "https://manganelo.com/manga/pn918005" "Solo_Leveling"
-ECHO completed: Solo Leveling & ECHO.
+python "%~dp0\mangadl.py" "website2" "folder2"
+ECHO completed: comic2 & ECHO.
 PAUSE
 ```
 
