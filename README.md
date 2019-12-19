@@ -14,6 +14,7 @@ A Python script to crawl a comic site and extract chapters. ~~Requires modificat
 
 ### Updates
 
+* 12/19/2019 - Implemented batch scripting for greater ease of use and renamed some methods for consistency
 * 12/03/2019 - Implemented automatic check for available cores for multi-processing; automatic file skip if files exists already, for ease of updating
 * 12/02/2019 - Implemented multi-processing; reduced processing time from 10 chapters/minute to 100 chapters/minute; 571s to 83s
 * 12/02/2019 - Modified for single input; less manual modifications 
