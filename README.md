@@ -8,7 +8,8 @@ Currently only works for the following websites: manganelo, mangakakalot
 * Find the comic to download (example: https://manganelo.com/manga/peerless_dad)
 * Edit the batch file and add two arguments: the website and the folder name.
 * For every comic to download, call another python line (sample below).
-* ECHO are optional (for debugging purposes)
+* ECHO are optional (for debugging purposes).
+* Click and run the batch file.
 
 ```batch
 @ECHO OFF
@@ -24,11 +25,12 @@ PAUSE
 
 ### Plans
 
-* to be planned
+* check a folder if it has no files
 
 ### Updates
 
 * 12/19/2019 - Implemented batch scripting for repeated ease of use and renamed some methods for visual consistency
+* 12/19/2019 - Modified a line to skip folders that already exist for faster updates
 * 12/03/2019 - Implemented automatic check for available cores for multi-processing; automatic file skip if files exists already, for ease of updating
 * 12/02/2019 - Implemented multi-processing; reduced processing time from 10 chapters/minute to 100 chapters/minute; 571s to 83s
 * 12/02/2019 - Modified for single input; less manual modifications 
