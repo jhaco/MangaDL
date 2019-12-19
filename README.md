@@ -18,6 +18,7 @@ ECHO completed: comic1 & ECHO.
 
 python "%~dp0\mangadl.py" "website2" "folder2"
 ECHO completed: comic2 & ECHO.
+
 PAUSE
 ```
 
