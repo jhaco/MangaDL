@@ -3,10 +3,19 @@ A Python script to crawl a comic site and extract chapters. ~~Requires modificat
 
 ### Usage
 
-* Input the URL of the primary comic page where all chapters are listed. Accounts for side chapters and main chapters.
-  * Search for a comic you want to download from: https://manganelo.com
-  * The link to input would look like this: https://manganelo.com/manga/peerless_dad
-* Input name of folder. All downloaded chapters will be sent here.
+* Edit the batch file and add two arguments: the website and the folder name.
+* For every comic to download, call another python line (sample below).
+* ECHO are optional (for debugging purposes)
+```batch
+@ECHO OFF
+
+python "%~dp0\mangadl.py" "https://manganelo.com/manga/peerless_dad" "Peerless_Dad"
+ECHO completed: Peerless Dad & ECHO.
+
+python "%~dp0\mangadl.py" "https://manganelo.com/manga/pn918005" "Solo_Leveling"
+ECHO completed: Solo Leveling & ECHO.
+PAUSE
+```
 
 ### Plans
 
@@ -14,7 +23,7 @@ A Python script to crawl a comic site and extract chapters. ~~Requires modificat
 
 ### Updates
 
-* 12/19/2019 - Implemented batch scripting for greater ease of use and renamed some methods for consistency
+* 12/19/2019 - Implemented batch scripting for repeated ease of use and renamed some methods for visual consistency
 * 12/03/2019 - Implemented automatic check for available cores for multi-processing; automatic file skip if files exists already, for ease of updating
 * 12/02/2019 - Implemented multi-processing; reduced processing time from 10 chapters/minute to 100 chapters/minute; 571s to 83s
 * 12/02/2019 - Modified for single input; less manual modifications 
